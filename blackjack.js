@@ -3,7 +3,7 @@ var utils = require('./utils')
 // only add inputs if they don't bust the target value (aka, exact match)
 // worst-case: O(n)
 module.exports = function blackjack (utxos, outputs, feeRate) {
-  if (!isFinite(utils.uintOrNaN(feeRate))) return {}
+  if (!isFinite(utils.positiveNumOrNaN(feeRate))) return {}
 
   var bytesAccum = utils.transactionBytes([], outputs)
 

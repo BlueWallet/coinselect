@@ -51,6 +51,33 @@
     }
   },
   {
+    "description": "1 output, decimal fee, change expected",
+    "feeRate": 5.5,
+    "inputs": [
+      106001
+    ],
+    "outputs": [
+      100000
+    ],
+    "expected": {
+      "inputs": [
+        {
+          "i": 0,
+          "value": 106001
+        }
+      ],
+      "outputs": [
+        {
+          "value": 100000
+        },
+        {
+          "value": 4758
+        }
+      ],
+      "fee": 1243
+    }
+  },
+  {
     "description": "1 output, sub-optimal inputs (if re-ordered), direct possible",
     "feeRate": 10,
     "inputs": [
@@ -786,17 +813,6 @@
   {
     "description": "inputs and outputs, bad feeRate (NaN)",
     "feeRate": "1",
-    "inputs": [
-      20000
-    ],
-    "outputs": [
-      10000
-    ],
-    "expected": {}
-  },
-  {
-    "description": "inputs and outputs, bad feeRate (NaN)",
-    "feeRate": 1.5,
     "inputs": [
       20000
     ],

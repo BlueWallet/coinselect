@@ -15,5 +15,18 @@ tape('utils', function (t) {
     t.equal(isNaN(utils.uintOrNaN(-1)), true)
   })
 
+  t.test('positiveNumOrNaN', function (t) {
+    t.plan(8)
+
+    t.equal(utils.positiveNumOrNaN(1), 1)
+    t.equal(isNaN(utils.positiveNumOrNaN('')), true)
+    t.equal(isNaN(utils.positiveNumOrNaN(Infinity)), true)
+    t.equal(isNaN(utils.positiveNumOrNaN(NaN)), true)
+    t.equal(isNaN(utils.positiveNumOrNaN('1')), true)
+    t.equal(isNaN(utils.positiveNumOrNaN('1.1')), true)
+    t.equal(isNaN(utils.positiveNumOrNaN(1.1)), false)
+    t.equal(isNaN(utils.positiveNumOrNaN(-1)), true)
+  })
+
   t.end()
 })

@@ -31,6 +31,37 @@
     }
   },
   {
+    "description": "1 to 3, decimal fee rate",
+    "feeRate": 10.5,
+    "inputs": [
+      18000
+    ],
+    "outputs": [
+      {},
+      {},
+      {}
+    ],
+    "expected": {
+      "inputs": [
+        {
+          "value": 18000
+        }
+      ],
+      "outputs": [
+        {
+          "value": 5090
+        },
+        {
+          "value": 5090
+        },
+        {
+          "value": 5090
+        }
+      ],
+      "fee": 2730
+    }
+  },
+  {
     "description": "5 to 2",
     "feeRate": 10,
     "inputs": [
@@ -303,17 +334,6 @@
   {
     "description": "inputs and outputs, bad feeRate (NaN)",
     "feeRate": "1",
-    "inputs": [
-      20000
-    ],
-    "outputs": [
-      {}
-    ],
-    "expected": {}
-  },
-  {
-    "description": "inputs and outputs, bad feeRate (NaN)",
-    "feeRate": 1.5,
     "inputs": [
       20000
     ],
