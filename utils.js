@@ -51,7 +51,7 @@ var BLANK_OUTPUT = outputBytes({})
 
 function finalize (inputs, outputs, feeRate) {
   var bytesAccum = transactionBytes(inputs, outputs)
-  var feeAfterExtraOutput = feeRate * (bytesAccum + BLANK_OUTPUT)
+  var feeAfterExtraOutput = Math.round(feeRate * (bytesAccum + BLANK_OUTPUT))
   var remainderAfterExtraOutput = sumOrNaN(inputs) - (sumOrNaN(outputs) + feeAfterExtraOutput)
 
   // is it worth a change output?

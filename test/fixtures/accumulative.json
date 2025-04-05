@@ -52,7 +52,7 @@
   },
   {
     "description": "1 output, decimal fee, change expected",
-    "feeRate": 5.5,
+    "feeRate": 1.1,
     "inputs": [
       106001
     ],
@@ -71,10 +71,10 @@
           "value": 100000
         },
         {
-          "value": 4758
+          "value": 5752
         }
       ],
-      "fee": 1243
+      "fee": 249
     }
   },
   {
