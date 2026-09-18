@@ -1,10 +1,11 @@
 var utils = require('./utils')
 
 // split utxos between each output, ignores outputs with .value defined
-module.exports = function split (utxos, outputs, feeRate) {
+module.exports = function split (utxos, outputs, feeRate, options) {
   if (!isFinite(utils.positiveNumOrNaN(feeRate))) return {}
+  if (!utils.checkOptions(options)) return {}
 
-  var bytesAccum = utils.transactionBytes(utxos, outputs)
+  var bytesAccum = utils.transactionBytes(utxos, outputs, options)
   var fee = feeRate * bytesAccum
   if (outputs.length === 0) return { fee: fee }
 
@@ -17,7 +18,7 @@ module.exports = function split (utxos, outputs, feeRate) {
     return a + !isFinite(x.value)
   }, 0)
 
-  if (remaining === 0 && unspecified === 0) return utils.finalize(utxos, outputs, feeRate)
+  if (remaining === 0 && unspecified === 0) return utils.finalize(utxos, outputs, feeRate, options)
 
   var splitOutputsCount = outputs.reduce(function (a, x) {
     if (x.value !== undefined) return a
@@ -27,7 +28,7 @@ module.exports = function split (utxos, outputs, feeRate) {
 
   // ensure every output is either user defined, or over the threshold
   if (!outputs.every(function (x) {
-    return x.value !== undefined || (splitValue > utils.dustThreshold(x, feeRate))
+    return x.value !== undefined || !utils.isDust(splitValue, x, feeRate)
   })) return { fee: fee }
 
   // assign splitValue to outputs not user defined
@@ -41,5 +42,5 @@ module.exports = function split (utxos, outputs, feeRate) {
     return y
   })
 
-  return utils.finalize(utxos, outputs, feeRate)
+  return utils.finalize(utxos, outputs, feeRate, options)
 }

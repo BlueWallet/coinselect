@@ -23,6 +23,15 @@ Module | Algorithm | Re-orders UTXOs?
 **Note:** Each algorithm will add a change output if the `input - output - fee` value difference is over a dust threshold.
 This is calculated independently by `utils.finalize`, irrespective of the algorithm chosen, for the purposes of safety.
 
+**Dust:** an output is considered dust when it is not worth more than it costs to spend (`value <= 148 * feeRate`), or when it is below Bitcoin Core dust limit for its type. The latter is calculated the same way as `GetDustThreshold()` does with default `dustrelayfee` of 3 sat/vbyte: 546 sats for P2PKH, 540 for P2SH, 294 for P2WPKH, 330 for P2WSH and P2TR (output type is guessed from `script.length`, output without a script is treated as P2PKH; `script.length` has to be the exact scriptPubKey length - a padded one is not recognized as a witness program and gets the higher non-witness limit). This way a change output that would be rejected by the network as `dust` is never created, its value goes to the fee instead. The same applies to the outputs created by `coinselect/split`. Values of user defined outputs are not checked.
+
+**Options:** every algorithm accepts an optional 4th argument `options`:
+
+- `changeScript`: `{ length: number }`, length of the scriptPubKey change is going to (22 for P2WPKH, 23 for P2SH, 25 for P2PKH, 34 for P2WSH and P2TR). It is used to account for the actual size of the change output and to pick its dust limit. If omitted, P2PKH change is assumed.
+- `txExtraBytes`: `number`, bytes of the transaction this library is not aware of. E.g. segwit marker & flag take 0.5 vbyte, so a wallet spending segwit inputs would pass `1`.
+
+Invalid options (wrong types, unknown keys) make algorithms return no solution (`{}`), as silently ignoring them would produce a transaction with a wrong fee.
+
 **Pro-tip:** if you want to send-all inputs to an output address, `coinselect/split` with a partial output (`.address` defined, no `.value`) can be used to send-all, while leaving an appropriate amount for the `fee`. 
 
 ## Example
