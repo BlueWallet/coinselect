@@ -13,3 +13,14 @@ fixtures.forEach(function (f) {
     t.end()
   })
 })
+
+tape('break: options', function (t) {
+  // 2 outputs of 4000: 10 + 148 + 34 * 2 = 226, + p2tr change 43 = 269, + 1 extra = 270
+  var result = coinBreak([{ value: 10000 }], { value: 4000 }, 1, { changeScript: { length: 34 }, txExtraBytes: 1 })
+  t.same(result.outputs, [{ value: 4000 }, { value: 4000 }, { value: 10000 - 8000 - 270 }])
+  t.equal(result.fee, 270)
+
+  t.same(coinBreak([{ value: 10000 }], { value: 4000 }, 1, { txExtraBytes: 1.5 }), {})
+
+  t.end()
+})
