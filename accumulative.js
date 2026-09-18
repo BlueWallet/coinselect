@@ -2,10 +2,11 @@ var utils = require('./utils')
 
 // add inputs until we reach or surpass the target value (or deplete)
 // worst-case: O(n)
-module.exports = function accumulative (utxos, outputs, feeRate) {
+module.exports = function accumulative (utxos, outputs, feeRate, options) {
   if (!isFinite(utils.positiveNumOrNaN(feeRate))) return {}
+  if (!utils.checkOptions(options)) return {}
 
-  var bytesAccum = utils.transactionBytes([], outputs)
+  var bytesAccum = utils.transactionBytes([], outputs, options)
 
   var inAccum = 0
   var inputs = []
@@ -32,7 +33,7 @@ module.exports = function accumulative (utxos, outputs, feeRate) {
     // go again?
     if (inAccum < outAccum + fee) continue
 
-    return utils.finalize(inputs, outputs, feeRate)
+    return utils.finalize(inputs, outputs, feeRate, options)
   }
 
   return { fee: feeRate * bytesAccum }
